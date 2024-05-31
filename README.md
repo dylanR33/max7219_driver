@@ -4,5 +4,5 @@ Welcome! This is an ESP-IDF project for the MAX7219 integrated circuit used for 
 
 ## Requirements
 
-Board: esp32s3
+Board: esp32s3  
 ESP-IDF: v5.1
