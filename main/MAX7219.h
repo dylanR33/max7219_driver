@@ -29,39 +29,59 @@
 // SPI_2 HOST
 #define MATRIX_HOST HSPI_HOST
 
+#define DISPLAY_COUNT 4
+#define DIGIT_REGISTER_COUNT 8
+
+typedef enum {
+    display1,
+    display2,
+    display3,
+    display4,
+    display5,
+    display6,
+    display7,
+    display8
+} display_select_t;
+
 typedef struct {
-    int x;
-    int y;
+    const int x;
+    const int y;
 } display_size_t;
 
 typedef struct {
-    gpio_num_t mosi_gpio;
-    gpio_num_t cs_gpio;
-    gpio_num_t clk_gpio;
-    display_size_t display_size;
-    uint8_t display_map[8];
+    const gpio_num_t mosi_gpio;
+    const gpio_num_t cs_gpio;
+    const gpio_num_t clk_gpio;
+    const display_size_t display_size;
+    uint8_t display_map[DIGIT_REGISTER_COUNT * DISPLAY_COUNT];
+    spi_device_handle_t spi_handle;
+    const int invert;
 } max7219_config_t;
+
+void draw_plane(uint8_t plane[][8], display_select_t disp, max7219_config_t* cfg);
 
 void draw_pixel(int x, int y, max7219_config_t* cfg);
 
-void smiley_face();
+void smiley_face(display_select_t disp, max7219_config_t* cfg);
 
-void heart();
+void heart(display_select_t disp, max7219_config_t* cfg);
 
-void flicker_screen();
+void flicker_screen(display_select_t disp, max7219_config_t* cfg);
 
-void clear_screen();
+void clear_screen(max7219_config_t* cfg);
 
-void write_reg(uint8_t address, uint8_t data_out);
+void write_reg(uint8_t address, uint8_t data_out, int display_num, max7219_config_t* cfg);
 
 void matrix_init(max7219_config_t* cfg);
 
-void display_test();
+void display_test(display_select_t display, max7219_config_t* cfg);
 
-void stop_display_test();
+void stop_display_test(display_select_t display, max7219_config_t* cfg);
 
-void shut_down();
+void shut_down(display_select_t display, max7219_config_t* cfg);
 
-void normal_operation();
+void normal_operation(display_select_t display, max7219_config_t* cfg);
+
+uint8_t reverse_bits(uint8_t val);
 
 #endif
